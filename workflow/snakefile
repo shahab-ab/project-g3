@@ -1,0 +1,63 @@
+configfile: "config.yaml"
+
+#thesamples = ["A", "B", "C"]
+
+rule map_reads:
+    input:
+        "data/genome.fa",
+        "data/samples/{sample}.fastq"
+    output:
+        temp("results/mapped/{sample}.bam")
+    conda:
+        "envs/mapping.yaml"
+    threads: 
+        8
+    log:
+        "logs/map_reads_{sample}.log"
+    params:
+        a="mem -t", 
+        b="view -Sb -"
+    shell:
+        "bwa {params.a} {threads} {input} | samtools {params.b} > {output}"
+
+rule sort_alignments:
+    input:
+        "results/mapped/{sample}.bam"
+    output:
+        temp("results/mapped/{sample}.sorted.bam")
+    conda:
+        "envs/mapping.yaml"
+    log:
+        "logs/sort_alignments_{sample}.log"
+    params:
+        a="sort -o"
+    shell:
+        "samtools {params.a} {output} {input}"
+
+rule call_variants:
+    input:
+        fa="data/genome.fa",
+        bam=expand("results/mapped/{sample}.sorted.bam", sample=config["samples"])
+    output:
+        "results/calls/all.vcf"
+    conda:
+        "envs/calling.yaml"
+    log:
+        "logs/call_variants.log"
+    params: 
+        a="mpileup -f",
+        b="call -mv -"
+    shell:
+        "bcftools {params.a} {input.fa} {input.bam} | bcftools {params.b} > {output}"
+
+rule plot_quals:
+    input:
+        "results/calls/all.vcf"
+    output:
+        "results/plots/quals.svg"
+    conda:
+        "envs/stats.yaml"
+    log:
+        "logs/plot_quals.log"
+    notebook:
+        "notebooks/plot-quals.py.ipynb"
