@@ -21,7 +21,6 @@ rule unpack:
     wrapper: "v1.21.1/bio/bgzip"
 
 # TODO adjust parameters
-# https://github.com/OpenGene/fastp
 rule trim_reads:
     input:
         sample=["results/samples/{sample}_R1_001.fastq", "results/samples/{sample}_R2_001.fastq"]
@@ -39,9 +38,8 @@ rule trim_reads:
     threads: 1
     wrapper: "v1.21.1/bio/fastp"
 
-# Source: http://ftp.ensemblgenomes.org/pub/viruses/fasta/sars_cov_2/dna/
 rule copy_genome:
-    input: "data/genomes/wuhan.fasta",
+    input: expand("data/genomes/{genome}", genome=config["genome"]),
     output: "results/genome/genome.fa"
     log: "logs/copy_genome.log"
     shell: "cp {input} {output}"
@@ -90,6 +88,7 @@ rule index_sorted_samples:
     wrapper: "v1.21.1/bio/samtools/index"
 
 # TODO replace with another tool?
+# maybe GATK + varlociraptor
 rule call_variants:
     input:
         ref="results/genome/genome.fa",
@@ -101,11 +100,8 @@ rule call_variants:
     params:
         extra="",
         chunksize=100000,
-        # normalize=False,
     threads: 4
     wrapper: "v1.21.1/bio/freebayes"
-
-# TODO use varlociraptor?
 
 rule bcf_to_vcf_gz:
     input: "results/calls/{sample}.bcf"
