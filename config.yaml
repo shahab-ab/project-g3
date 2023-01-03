@@ -1,0 +1,6 @@
+genome: "Sars_cov_2.ASM985889v3.dna.toplevel"
+samples:
+    - "RV417026_S15_L001"
+    - "RV417027_S18_L001"
+    - "RV417028_S20_L001"
+    - "RV417029_S19_L001"

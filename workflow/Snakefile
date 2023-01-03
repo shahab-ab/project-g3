@@ -1,0 +1,158 @@
+configfile: "config.yaml"
+
+# * Trim reads (Fastp)
+# * Align reads (bwa mem)
+# * Sort reads (samtools sort)
+# Assemble genome (MEGAHIT/metaSPAdes?)
+# * Call variants (lancet?+Varlociraptor)
+# * Reconstruct fasta file? (bcftools consensus?)
+# * Assign lineage (Pangolin)
+
+rule all:
+    input: expand("results/lineage_reports/{sample}.csv", sample=config["samples"])
+    log: "logs/all.log"
+
+rule unpack:
+    input: "data/samples/{sample}.fastq.gz",
+    output: "results/samples/{sample}.fastq",
+    params: extra="-d",
+    threads: 4
+    log: "logs/unpack/{sample}.log",
+    wrapper: "v1.21.1/bio/bgzip"
+
+# TODO adjust parameters
+# https://github.com/OpenGene/fastp
+rule trim_reads:
+    input:
+        sample=["results/samples/{sample}_R1_001.fastq", "results/samples/{sample}_R2_001.fastq"]
+    output:
+        trimmed=["results/trimmed/{sample}.1.fastq", "results/trimmed/{sample}.2.fastq"],
+        merged="results/trimmed/{sample}.merged.fastq",
+        failed="results/trimmed/{sample}.failed.fastq",
+        html="report/trim_reads/{sample}.html",
+        json="report/trim_reads/{sample}.json"
+    log: "logs/trim_reads/{sample}.log"
+    params:
+        # adapters="--adapter_sequence ACGGCTAGCTA",
+        adapters="",
+        extra="--merge"
+    threads: 1
+    wrapper: "v1.21.1/bio/fastp"
+
+# Source: http://ftp.ensemblgenomes.org/pub/viruses/fasta/sars_cov_2/dna/
+rule copy_genome:
+    input: "data/genomes/wuhan.fasta",
+    output: "results/genome/genome.fa"
+    log: "logs/copy_genome.log"
+    shell: "cp {input} {output}"
+
+rule index_genome_bwa:
+    input: "results/genome/genome.fa",
+    output: idx=multiext("results/genome/genome.fa", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+    log: "logs/index_genome/bwa.log",
+    params: algorithm="bwtsw",
+    wrapper: "v1.21.1/bio/bwa/index"
+
+rule index_genome_samtools:
+    input: "results/genome/genome.fa",
+    output: "results/genome/genome.fa.fai",
+    log: "logs/index_genome/samtools.log",
+    params: extra="",
+    wrapper: "v1.21.1/bio/samtools/faidx"
+
+rule align_reads:
+    input:
+        reads=["results/trimmed/{sample}.1.fastq", "results/trimmed/{sample}.2.fastq"],
+        idx=multiext("results/genome/genome.fa", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+    output: "results/mapped/{sample}.bam",
+    log: "logs/align_reads/{sample}.log",
+    params:
+        extra="",
+        sorting="none",
+        sort_order="queryname",
+        sort_extra="",
+    threads: 8
+    wrapper: "v1.21.1/bio/bwa/mem"
+
+rule sort_alignments:
+    input: "results/mapped/{sample}.bam"
+    output: "results/sorted/{sample}.bam"
+    log: "logs/sort_alignments/{sample}.log"
+    threads: 8
+    wrapper: "v1.21.1/bio/samtools/sort"
+
+rule index_sorted_samples:
+    input: "results/sorted/{sample}.bam",
+    output: "results/sorted/{sample}.bam.bai",
+    log: "logs/index_sorted_samples/{sample}.log",
+    params: extra="",
+    threads: 4
+    wrapper: "v1.21.1/bio/samtools/index"
+
+# TODO replace with another tool?
+rule call_variants:
+    input:
+        ref="results/genome/genome.fa",
+        idx="results/genome/genome.fa.fai",
+        samples="results/sorted/{sample}.bam",
+        indexes="results/sorted/{sample}.bam.bai",
+    output: "results/calls/{sample}.bcf",
+    log: "logs/call_variants/{sample}.log",
+    params:
+        extra="",
+        chunksize=100000,
+        # normalize=False,
+    threads: 4
+    wrapper: "v1.21.1/bio/freebayes"
+
+# TODO use varlociraptor?
+
+rule bcf_to_vcf_gz:
+    input: "results/calls/{sample}.bcf"
+    output: "results/calls/{sample}.vcf.gz"
+    log: "logs/bcf_to_vcf_gz/{sample}.log"
+    params: extra="",
+    wrapper: "v1.21.1/bio/bcftools/view"
+
+rule index_vcf_gz:
+    input: "results/calls/{sample}.vcf.gz"
+    output: "results/calls/{sample}.vcf.gz.tbi"
+    log: "logs/index_vcf_gz/{sample}.log"
+    params: "-p vcf",
+    wrapper: "v1.21.1/bio/tabix/index"
+
+rule consensus:
+    input:
+        calls="results/calls/{sample}.vcf.gz",
+        idx="results/calls/{sample}.vcf.gz.tbi",
+        genome="results/genome/genome.fa",
+    output: report("results/consensus/{sample}.fa",caption="report/sample.rst",category="sample")
+    conda: "envs/bcftools.yaml"
+    log: "logs/consensus/{sample}.log"
+    shell: "bcftools consensus {input.calls} -f {input.genome} > {output} 2> {log}"
+
+rule assign_lineage:
+    input: "results/consensus/{sample}.fa"
+    output: "results/lineage_reports/{sample}.csv"
+    conda: "envs/pangolin.yaml"
+    log: "logs/assign_lineage/{sample}.log"
+    shell: "pangolin {input} --outfile {output}"
+
+# TODO stats/multiqc
+# rule samtools_stats:
+    # input: "results/sorted/{sample}.bam"
+    # output: "results/samtools_stats/{sample}.txt"
+    # conda: "envs/mapping.yaml"
+    # log: "logs/samtools_stats/{sample}.log"
+    # shell: "samtools stats {input} > {output}"
+
+# rule multiqc:
+    # input:
+        # expand("results/samtools_stats/{sample}.txt", sample=config["samples"])
+    # output: "qc/multiqc.html"
+    # params:
+        # extra=""
+    # log: "logs/multiqc.log"
+    # wrapper:
+        # "v1.21.1/bio/multiqc"
+
