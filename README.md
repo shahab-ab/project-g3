@@ -4,7 +4,7 @@ Still a work in progress.
 
 ## Usage
 
-Copy the samples which you would like to test.
+Copy the samples which you would like to test to `data/samples`.
 
 The each sample must consist of a paired-end read.
 
