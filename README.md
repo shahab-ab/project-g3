@@ -36,7 +36,7 @@ Then check the csv files in `results/lineage_reports`.
 - Annotate calls (snpEff)
 - Index calls and consensus (tabix index, bcftools consensus)
 - Assign lineage (pangolin)
-- Create stats and final report (samtools stats, bcftools stats, fastqc, multiqc)
+- Create stats and final report (samtools stats, bcftools stats, fastqc, gatk varianteval, multiqc)
 
 ## References
 

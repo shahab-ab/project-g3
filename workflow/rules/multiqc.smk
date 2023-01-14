@@ -21,6 +21,20 @@ rule fastqc:
     threads: 4
     wrapper: "v1.21.2/bio/fastqc"
 
+rule gatk_varianteval:
+    input:
+        vcf="results/annotated_calls/{sample}.vcf.gz",
+        ref="results/genome/genome.fa",
+        dict="results/genome/genome.dict",
+    output: vcf="report/varianteval/{sample}.grp",
+    log: "logs/gatk/varianteval/{sample}.log",
+    params:
+        extra="",
+        java_opts="",
+    resources: mem_mb=1024,
+    wrapper: "v1.21.2/bio/gatk/varianteval"
+
+
 rule multiqc:
     input:
         expand("report/lineage/{sample}.csv", sample=config["samples"]) +
@@ -29,7 +43,8 @@ rule multiqc:
         expand("report/trim_reads/{sample}_fastp.json", sample=config["samples"]) +
         expand("report/fastqc/{sample}.1_fastqc.zip", sample=config["samples"]) +
         expand("report/fastqc/{sample}.2_fastqc.zip", sample=config["samples"]) +
-        expand("report/snpeff/{sample}.csv", sample=config["samples"])
+        expand("report/snpeff/{sample}.csv", sample=config["samples"]) +
+        expand("report/varianteval/{sample}.grp", sample=config["samples"])
     output: "report/qc/multiqc.html"
     params:
         extra="",

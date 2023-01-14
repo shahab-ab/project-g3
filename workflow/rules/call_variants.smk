@@ -18,7 +18,7 @@ rule gatk_filter:
     input:
         vcf="results/calls/{sample}.vcf",
         ref="results/genome/genome.fa",
-    output: vcf="results/calls_filtered/{sample}.vcf",
+    output: vcf="results/filtered_calls/{sample}.vcf",
     log: "logs/gatk/filter/{sample}.log",
     params:
         filters={"lowQUAL100": "QUAL < 100", "genomeEnd": "POS > 29850", "highFS60": "FS >= 60.0", "lowQD2.0": "QD < 2.0", "lowReadPosRankSum4.0": "ReadPosRankSum < -4.0", "highSOR4.0": "SOR >= 4.0"},
