@@ -6,7 +6,7 @@ Still a work in progress.
 
 Copy the samples which you would like to test to `data/samples`.
 
-The each sample must consist of a paired-end read.
+Each sample must consist of a paired-end read.
 
 Samples must be named as follows:
 
