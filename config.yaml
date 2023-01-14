@@ -1,4 +1,3 @@
-genome: "Sars_cov_2.ASM985889v3.dna.toplevel.fa"
 samples:
     - "RV417026_S15_L001"
     - "RV417027_S18_L001"
