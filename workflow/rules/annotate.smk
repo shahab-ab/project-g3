@@ -1,12 +1,11 @@
-# TODO GATK compatible (-o gatk) 
 rule snpeff_annotate:
     input:
-        calls="results/calls/{sample}.vcf.gz",
-        db="resources/snpeff/covid19_core"
+        calls="results/calls/{sample}.vcf"
     output:
-        calls="results/annotated_calls/{sample}.vcf",
+        calls="results/annotated_calls/{sample}.vcf.gz",
         stats="report/snpeff/{sample}.html",
         csvstats="report/snpeff/{sample}.csv"
     log: "logs/snpeff/{sample}.log"
     resources: mem_mb=4096
-    wrapper: "v1.21.2/bio/snpeff/annotate"
+    conda: "../envs/snpeff.yaml"
+    shell: "set -euo pipefail; snpEff  -Xmx4096M -stats {output.stats} -csvStats {output.csvstats} -v NC_045512.2 {input.calls} 2> {log} | bcftools view -Oz > {output.calls}"

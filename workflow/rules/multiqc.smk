@@ -5,7 +5,7 @@ rule samtools_stats:
     wrapper: "v1.21.2/bio/samtools/stats"
 
 rule bcftools_stats:
-    input: "results/calls/{sample}.vcf.gz"
+    input: "results/annotated_calls/{sample}.vcf.gz"
     output: "report/bcftools_stats/{sample}.txt"
     conda: "../envs/bcftools.yaml"
     log: "logs/bcftools_stats/{sample}.log"

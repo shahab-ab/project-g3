@@ -1,23 +1,17 @@
 configfile: "config.yaml"
 
-
 include: "rules/unpack_fastq.smk"
 include: "rules/trim_reads.smk"
 include: "rules/prepare_genome.smk"
 include: "rules/align_reads.smk"
 include: "rules/sort_alignments.smk"
+include: "rules/read_groups.smk"
 include: "rules/call_variants.smk"
+include: "rules/annotate.smk"
 include: "rules/consensus.smk"
 include: "rules/assign_lineage.smk"
 include: "rules/multiqc.smk"
 
 rule all:
-    input: expand("results/lineage_reports/{sample}.csv", sample=config["samples"])
+    input: "report/qc/multiqc.html"
     log: "logs/all.log"
-
-# TODO de novo assembly? (MEGAHIT/metaSPAdes) + scaffolding with RaGoo + quast
-# TODO annotate with speff https://pcingola.github.io/SnpEff/se_introduction/
-# TODO stats/multiqc
-# TODO snakemake/docker repository
-# TODO show better final output
-# TODO maybe move/copy lineage to results?
