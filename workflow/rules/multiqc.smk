@@ -24,6 +24,7 @@ rule fastqc:
 rule gatk_varianteval:
     input:
         vcf="results/annotated_calls/{sample}.vcf.gz",
+        vcf_idx="results/annotated_calls/{sample}.vcf.gz.tbi",
         ref="results/genome/genome.fa",
         dict="results/genome/genome.dict",
     output: vcf="report/varianteval/{sample}.grp",
