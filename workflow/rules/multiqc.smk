@@ -12,7 +12,7 @@ rule bcftools_stats:
     shell: "bcftools stats {input} > {output} 2> {log}"
 
 rule fastqc:
-    input: "results/trimmed/{sample}.fastq"
+    input: "data/samples/{sample}.fastq.gz"
     output:
         html="report/fastqc/{sample}.html",
         zip="report/fastqc/{sample}_fastqc.zip"
@@ -42,8 +42,8 @@ rule multiqc:
         expand("report/samtools_stats/{sample}.txt", sample=config["samples"]) +
         expand("report/bcftools_stats/{sample}.txt", sample=config["samples"]) +
         expand("report/trim_reads/{sample}_fastp.json", sample=config["samples"]) +
-        expand("report/fastqc/{sample}.1_fastqc.zip", sample=config["samples"]) +
-        expand("report/fastqc/{sample}.2_fastqc.zip", sample=config["samples"]) +
+        expand("report/fastqc/{sample}_R1_001_fastqc.zip", sample=config["samples"]) +
+        expand("report/fastqc/{sample}_R2_001_fastqc.zip", sample=config["samples"]) +
         expand("report/snpeff/{sample}.csv", sample=config["samples"]) +
         expand("report/varianteval/{sample}.grp", sample=config["samples"])
     output: "report/qc/multiqc.html"
