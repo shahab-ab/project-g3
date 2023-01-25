@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+configfile: "config/config.yaml"
 
 include: "rules/unpack_fastq.smk"
 include: "rules/trim_reads.smk"
@@ -9,6 +9,7 @@ include: "rules/read_groups.smk"
 include: "rules/call_variants.smk"
 include: "rules/annotate.smk"
 include: "rules/consensus.smk"
+include: "rules/denovo.smk"
 include: "rules/assign_lineage.smk"
 include: "rules/multiqc.smk"
 

@@ -50,6 +50,8 @@ Then check the csv files in `report/qc/multiqc.html`.
 
 - Snakemake/Docker repository
 - Show better final output
+- Check for bottlenecks
+- Follow https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## Improvements
 
