@@ -84,4 +84,5 @@ rule multiqc:
         extra="",
         use_input_files_only=True
     log: "logs/multiqc.log"
+    threads: 4
     wrapper: "v1.21.1/bio/multiqc"
