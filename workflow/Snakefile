@@ -1,17 +1,14 @@
 configfile: "config/config.yaml"
 
-include: "rules/unpack_fastq.smk"
-include: "rules/trim_reads.smk"
-include: "rules/prepare_genome.smk"
-include: "rules/align_reads.smk"
-include: "rules/sort_alignments.smk"
-include: "rules/read_groups.smk"
-include: "rules/call_variants.smk"
-include: "rules/annotate.smk"
-include: "rules/consensus.smk"
-include: "rules/denovo.smk"
 include: "rules/assign_lineage.smk"
 include: "rules/multiqc.smk"
+include: "rules/prepare_genome.smk"
+include: "rules/report.smk"
+include: "rules/trim_reads.smk"
+include: "rules/unpack_sample.smk"
+
+include: "rules/de_novo/all.smk"
+include: "rules/reference_guided/all.smk"
 
 rule all:
     input: "report/qc/multiqc.html"

@@ -1,0 +1,7 @@
+include: "report.smk"
+include: "01_align_reads.smk"
+include: "02_sort_alignments.smk"
+include: "03_read_groups.smk"
+include: "04_call_variants.smk"
+include: "05_annotate.smk"
+include: "06_consensus.smk"
