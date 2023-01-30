@@ -19,4 +19,4 @@ rule consensus_refbased:
     output: "results/constructed/{sample}_refbased.fa"
     conda: "../../envs/bcftools.yaml"
     log: "logs/consensus_refbased/{sample}.log"
-    shell: "bcftools consensus {input.calls} -f {input.genome} 2> {log} | sed -e 's/^>.*$/>{wildcards.sample}_refbased/' > {output}"
+    shell: "bcftools consensus {input.calls} -f {input.genome} 2> {log} | sed -e 's/^>.*$/>[refbased] {wildcards.sample}/' > {output}"

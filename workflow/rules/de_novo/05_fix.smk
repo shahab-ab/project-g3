@@ -13,5 +13,5 @@ rule trim_rename_sequence_denovo:
     output: "results/constructed/{sample}_denovo.fa"
     conda: "../../envs/seqtk.yaml"
     log: "logs/trim_rename_sequence_denovo/{sample}.log"
-    shell: "seqtk seq -L 500 {input} | sed -e 's/^>.*$/>{wildcards.sample}_denovo/' > {output}"
+    shell: "seqtk seq -L 500 {input} | sed -e 's/^>.*$/>[denovo] {wildcards.sample}/' > {output}"
 

@@ -6,6 +6,7 @@ rule multiqc:
             "report/trim_reads/{sample}_fastp.json",
             "report/assign_lineage/{sample}_refbased.csv",
             "report/assign_lineage/{sample}_denovo.csv",
+            "report/pick_lineage/{sample}.csv",
             "report/quast_denovo/{sample}/report.tsv",
             "report/samtools_stats_refbased/{sample}.txt",
             "report/bcftools_stats_refbased/{sample}.txt",
