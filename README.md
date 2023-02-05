@@ -48,12 +48,13 @@ Then check the csv files in `report/qc/multiqc.html`.
 
 ## TODO
 
+- Review Quast
 - Snakemake/Docker repository
 - Show better final output
+- Check for bottlenecks
+- Follow https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## Improvements
 
 - Add varlociraptor
 - Support single-end reads
-- Move/copy lineage reports to results
-- Add de novo assembly (MEGAHIT/metaSPAdes) + scaffolding with RaGoo + quast

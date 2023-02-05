@@ -1,9 +1,9 @@
-rule align_reads:
+rule align_reads_denovo:
     input:
         reads=["results/trimmed/{sample}.1.fastq", "results/trimmed/{sample}.2.fastq"],
-        idx=multiext("results/genome/genome.fa", ".amb", ".ann", ".bwt", ".pac", ".sa"),
-    output: "results/mapped/{sample}.bam",
-    log: "logs/align_reads/{sample}.log",
+        idx=multiext("results/denovo/patched/{sample}.fa", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+    output: "results/denovo/mapped/{sample}.bam",
+    log: "logs/align_reads_denovo/{sample}.log",
     params:
         extra="",
         sorting="none",

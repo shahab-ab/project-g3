@@ -1,0 +1,8 @@
+samples:
+    - "RV417026_S15_L001" # B.1.545 *
+    - "RV417027_S18_L001" # BA.1.18
+    - "RV417028_S20_L001" # BA.2
+    - "RV417029_S19_L001" # B.1.617.2
+    #- "Demo1_SRX9937688_downsampled" # B.1.167
+    #- "Demo2_ERX4331912_downsampled" # B.1.356 *
+    #- "Demo3_SRX10063284_downsampled" # B.1.1.7

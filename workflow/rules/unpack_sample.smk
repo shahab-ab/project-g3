@@ -1,4 +1,4 @@
-rule unpack_fastq:
+rule unpack_sample:
     input: "data/samples/{sample}.fastq.gz",
     output: "results/samples/{sample}.fastq",
     params: extra="-d",
