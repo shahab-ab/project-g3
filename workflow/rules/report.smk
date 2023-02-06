@@ -1,5 +1,5 @@
 rule fastqc:
-    input: "data/samples/{sample}.fastq.gz"
+    input: "results/samples/{sample}.fastq"
     output:
         html="report/fastqc/{sample}.html",
         zip="report/fastqc/{sample}_fastqc.zip"
