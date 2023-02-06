@@ -1,3 +1,4 @@
+containerized: "docker://docksh360/snake-g3"
 configfile: "config/config.yaml"
 
 include: "rules/assign_lineage.smk"
