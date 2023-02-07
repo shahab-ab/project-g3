@@ -30,12 +30,19 @@ Installation
 guide](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html)
 to install Mambaforge and Snakemake.
 
+Make sure to do a full installation, creating an environment named `snakemake`:
+
+```
+$ conda activate base
+$ mamba create -c conda-forge -c bioconda -n snakemake snakemake
+```
+
 #### Step 2: Clone The Repository
 
 Run the following command to clone the repository from GitHub:
 
 ```
-git clone https://github.com/shahab-ab/project-g3.git
+$ git clone https://github.com/shahab-ab/project-g3.git
 ```
 
 Or download the latest release and extract it on your machine.
@@ -53,7 +60,7 @@ Run the following command to pull the latest image of the workflow from Docker
 Hub:
 
 ```
-docker pull docksh360/project-g3:latest
+$ docker pull docksh360/project-g3:latest
 ```
 
 ## Input
@@ -78,7 +85,7 @@ my_sample.1.fastq.gz  my_sample.2.fastq.gz
 Then edit `config/config.yaml` (if you have not cloned the repository, create
 `config/config.yaml` yourself) and change the `samples` object to reflect the
 names of the samples. The `samples` object contains one sub-object for each
-read, whose key is the `<SAMPLE_NAME>` mentioned above, and which has two
+sample, whose key is the `<SAMPLE_NAME>` mentioned above, and which has two
 properties:
 
 - `r1_suffix`: The suffix for the first read (`<READ1_SUFFIX`), without the `.fastq.gz` extension
@@ -103,8 +110,8 @@ samples:
 From the project's main directory, run the following commands:
 
 ```
-conda activate snakemake # activate the snakemake environment if necessary
-snakemake --use-conda --cores 4 report/qc/multiqc.html
+$ conda activate snakemake # activate the snakemake environment if necessary
+$ snakemake --use-conda --cores 4 report/qc/multiqc.html
 ```
 
 You may change the number of cores (4 in this instance) to reflect how many
@@ -115,7 +122,7 @@ cores you would like the workflow to make use of.
 From the project's main directory, run the following command:
 
 ```
-docker run --rm \
+$ docker run --rm \
 	--volume="`pwd`/data/samples:/project/data/samples:ro" \
 	--volume="`pwd`/config:/project/config:ro" \
 	--volume="`pwd`/report/qc:/project/report/qc" \
@@ -142,9 +149,8 @@ This is an example output of running the workflow on 4 different samples:
 
 In this example, `RV417026_S15_L001` is identified assigned different lineages
 by de-novo and reference-guided assembly. However, we notice that conflict for
-the reference-guided result has a conflict of 0.1, whereas with de-novo,
-conflict is 0. In this case, we picked the result with the lower conflict
-value.
+the reference-guided result has a value of 0.1, whereas with de-novo, conflict
+is 0. In this case, we picked the result with the lower conflict value.
 
 ## File Structure and Organization
 
