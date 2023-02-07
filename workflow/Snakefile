@@ -1,0 +1,15 @@
+configfile: "config/config.yaml"
+
+include: "rules/assign_lineage.smk"
+include: "rules/multiqc.smk"
+include: "rules/prepare_genome.smk"
+include: "rules/report.smk"
+include: "rules/trim_reads.smk"
+include: "rules/unpack_sample.smk"
+
+include: "rules/de_novo/all.smk"
+include: "rules/reference_guided/all.smk"
+
+rule all:
+    input: "report/qc/multiqc.html"
+    log: "logs/all.log"

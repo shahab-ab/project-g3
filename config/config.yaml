@@ -1,0 +1,22 @@
+samples:
+    "RV417026_S15_L001": # B.1.545
+      r1_suffix: "_R1_001"
+      r2_suffix: "_R2_001"
+    "RV417027_S18_L001": # BA.1.18
+      r1_suffix: "_R1_001"
+      r2_suffix: "_R2_001"
+    "RV417028_S20_L001": # BA.2
+      r1_suffix: "_R1_001"
+      r2_suffix: "_R2_001"
+    "RV417029_S19_L001": # B.1.617.2
+      r1_suffix: "_R1_001"
+      r2_suffix: "_R2_001"
+    #"Demo1_SRX9937688_downsampled": # B.1.167
+      #r1_suffix: ".1"
+      #r2_suffix: ".2"
+    #"Demo2_ERX4331912_downsampled": # B.1.356
+      #r1_suffix: ".1"
+      #r2_suffix: ".2"
+    #"Demo3_SRX10063284_downsampled": # B.1.1.7
+      #r1_suffix: ".1"
+      #r2_suffix: ".2"
