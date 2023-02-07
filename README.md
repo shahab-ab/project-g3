@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sars-CoV-2 Lineage Identification Pipeline
 
 Still a work in progress.
