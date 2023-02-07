@@ -1,6 +1,6 @@
 rule trim_reads:
     input:
-        sample=["results/samples/{sample}.1.fastq", "results/samples/{sample}.1.fastq"]
+        sample=["results/samples/{sample}.1.fastq", "results/samples/{sample}.2.fastq"]
     output:
         trimmed=["results/trimmed/{sample}.1.fastq", "results/trimmed/{sample}.2.fastq"],
         failed="results/trimmed/{sample}.failed.fastq",

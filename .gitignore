@@ -4,4 +4,4 @@ qc/
 report/
 results/
 data/samples/
-docker-sample/*
+#docker-sample/*

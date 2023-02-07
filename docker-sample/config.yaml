@@ -1,0 +1,4 @@
+samples:
+    "Demo1_SRX9937688_downsampled":
+      r1_suffix: ".1"
+      r2_suffix: ".2"
