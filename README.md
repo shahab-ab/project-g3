@@ -49,10 +49,11 @@ Or download the latest release and extract it on your machine.
 
 ### Using Docker
 
-#### Step 1: Install Docker
+#### Step 1: Install Docker Engine
 
-From the [Get Docker page](https://docs.docker.com/get-docker/), install the
-appropriate Docker version for your system.
+From the [Docker Engine installation
+page](https://docs.docker.com/engine/install/) install the appropriate Docker
+Engine version for your system.
 
 #### Step 2: Pull Docker Image
 
